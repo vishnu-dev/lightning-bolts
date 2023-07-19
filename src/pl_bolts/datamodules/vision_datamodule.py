@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, Dataset, random_split
 
 
 class VisionDataModule(LightningDataModule):
-    EXTRA_ARGS: dict = {}
+    extra_args: dict = {}
     name: str = ""
     #: Dataset class to use
     dataset_cls: type
@@ -102,8 +102,8 @@ class VisionDataModule(LightningDataModule):
             train_transforms = self.default_transforms() if self.train_transforms is None else self.train_transforms
             val_transforms = self.default_transforms() if self.val_transforms is None else self.val_transforms
 
-            dataset_train = self.dataset_cls(self.data_dir, train=True, transform=train_transforms, **self.EXTRA_ARGS)
-            dataset_val = self.dataset_cls(self.data_dir, train=True, transform=val_transforms, **self.EXTRA_ARGS)
+            dataset_train = self.dataset_cls(self.data_dir, train=True, transform=train_transforms, **self.extra_args)
+            dataset_val = self.dataset_cls(self.data_dir, train=True, transform=val_transforms, **self.extra_args)
 
             # Split
             self.dataset_train = self._split_dataset(dataset_train)
@@ -112,7 +112,7 @@ class VisionDataModule(LightningDataModule):
         if stage == "test" or stage is None:
             test_transforms = self.default_transforms() if self.test_transforms is None else self.test_transforms
             self.dataset_test = self.dataset_cls(
-                self.data_dir, train=False, transform=test_transforms, **self.EXTRA_ARGS
+                self.data_dir, train=False, transform=test_transforms, **self.extra_args
             )
 
     def _split_dataset(self, dataset: Dataset, train: bool = True) -> Dataset:
